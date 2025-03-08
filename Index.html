@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ABC Swim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FFFF00; /* Page background yellow */
+            margin: 0; /* Remove default margin */
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space out columns */
+            align-items: flex-start; /* Align items at the top */
+            min-height: 100vh; /* Full height of viewport */
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            text-align: center;
+            flex: 1; /* Take available space on left */
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .input-group {
+            /* No margin-bottom needed */
+        }
+        input[type="text"] {
+            padding: 5px;
+            width: 150px;
+            cursor: pointer;
+            border: 0px solid #ccc;
+            text-decoration: none;
+            font-weight: bold;
+            color: #000000; /* Black text for visibility */
+            background-color: #FFFF00; /* Yellow background to match body */
+        }
+        input[type="text"]:hover {
+            background-color: #FF0000; /* Red hover effect */
+        }
+        .header-text {
+            padding: 5px;
+            font-weight: bold; /* Bold text */
+            font-style: italic; /* Italic text */
+            font-size: 175%; /* Increased font size by 25% */
+            cursor: default;
+            display: inline-block;
+            color: #FF0000; /* Red text */
+            font-family: 'Libre Baskerville', serif;
+            text-shadow: 
+                -1px -1px 0 #000, 
+                 1px -1px 0 #000, 
+                -1px  1px 0 #000, 
+                 1px  1px 0 #000; /* Black outline effect */
+        }
+        .header-image {
+            display: block;
+            margin: 5px auto; /* Center image with spacing above and below */
+            max-width: 80%; /* Ensure it fits within container */
+            height: auto; /* Maintain aspect ratio */
+            border: 0px solid #ccc; /* No border */
+        }
+        .strava-container {
+            width: 300px; /* Fixed width for Strava widget */
+            padding: 5px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        .strava-container iframe {
+            width: 100%;
+            height: 454px; /* Height from Strava widget */
+            border: 0px solid #ccc;
+        }
+        .doc-container {
+            width: 600px; /* Fixed width for document viewer */
+            padding: 10px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        .doc-container iframe {
+            width: 100%;
+            height: 1200px; /* Fixed height for Word doc */
+            border: 0px solid #ccc;
+            background-color: #FFFFFF; /* White background for iframe */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="header-text">Annapolis Breakfast Club</span>
+        <img src="https://i.imgur.com/l6Lcm8j.jpeg" alt="Annapolis Breakfast Club Image" class="header-image">
+        <div class="button-row">
+            <div class="input-group">
+                <a href="/subpage1">
+                    <input type="text" value="Previous Workouts" readonly>
+                </a>
+            </div>
+            <div class="input-group">
+                <a href="https://abreakfastclub.w3spaces.com/rosterlanes.html">
+                    <input type="text" value="Roster" readonly>
+                </a>
+            </div>
+            <div class="input-group">
+                <a href="https://abreakfastclub.w3spaces.com/history.html">
+                    <input type="text" value="About" readonly>
+                </a>
+            </div>
+                        <div class="input-group">
+                <a href="https://abreakfastclub.w3spaces.com/calendar.html">
+                    <input type="text" value="Calendar" readonly>
+                </a>
+            </div>
+            </div>
+                <div class="input-group">
+                <a href="https://abreakfastclub.w3spaces.com/bayswiminfo.html">
+                <input type="text" value="Bay Swim Info" readonly>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="strava-container">
+        <iframe allowtransparency="true" frameborder="0" height="454" scrolling="no" src="https://www.strava.com/clubs/1426652/latest-rides/ab9ad42b8a2516bd83569e11d9f11c75c0b09769?show_rides=true" width="300"></iframe>
+    </div>
+    <div class="doc-container">
+        <iframe src="https://docs.google.com/document/d/e/2PACX-1vQgnP0YR2ddLjK6bF8RvWPWNezmEGBWdQ0H6Wq1MA-j9Hf5a29vz8kpVHl7EKpwXQ/pub?embedded=true"></iframe>
+    </div>
+
+    <script>
+        const headerText = document.querySelector('.header-text');
+        const originalText = "Annapolis Breakfast Club";
+        const hoverText = "Andy's Breakfast Club";
+
+        headerText.addEventListener('mouseover', () => {
+            headerText.textContent = hoverText;
+        });
+
+        headerText.addEventListener('mouseout', () => {
+            headerText.textContent = originalText;
+        });
+    </script>
+</body>
+</html>
