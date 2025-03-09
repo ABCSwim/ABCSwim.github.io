@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swimming Pool Lanes with Headshot Info</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f9;
+            position: relative; /* For popup positioning */
+            min-height: 100vh; /* Ensure full height */
+        }
+        .pool-container {
+            position: relative;
+            display: inline-block;
+        }
+        .pool-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .lane {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        /* Lane positions */
+        .lane1 { top: 70%; left: 70%; }
+        .lane2 { top: 70%; left: 63%; }
+        .lane3 { top: 70%; left: 57%; }
+        .lane4 { top: 70%; left: 52%; }
+        .lane5 { top: 70%; left: 45%; }
+        .lane6 { top: 70%; left: 39%; }
+        .lane7 { top: 70%; left: 32%; }
+
+        /* Popup styles for headshots */
+        .headshot-popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent; /* Remove white rectangle */
+            padding: 20px;
+            z-index: 1000; /* Above other content */
+            max-width: 80%;
+            overflow-x: auto; /* Scroll if too many images */
+        }
+        .headshot-popup a {
+            display: inline-block;
+            margin: 0 10px; /* Spacing between headshots */
+            cursor: pointer;
+        }
+        .headshot-popup img {
+            width: 80px; /* Headshot size */
+            height: 80px;
+            border-radius: 50%; /* Circular headshots */
+            object-fit: cover; /* Ensure images fit nicely */
+        }
+
+        /* Info box styles (for click) */
+        .info-box {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 2000; /* Above headshot popup */
+            max-width: 400px;
+            text-align: left;
+        }
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px; /* Indent list */
+            list-style-type: disc; /* Bullet points */
+        }
+        .info-box li {
+            margin-bottom: 10px; /* Space between items */
+        }
+
+        /* Hover box styles (for mouseover) */
+        .hover-box {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1500; /* Above headshot popup, below info-box */
+            max-width: 200px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="pool-container">
+        <img src="https://uploads-ssl.webflow.com/5de35b5783c9d790ffea68ae/5f2aa64523407102a0203acb_FitRepublik.jpg" alt="Swimming Pool">
+        <!-- Clickable numbers -->
+        <a href="#lane1" class="lane lane1" data-lane="1">1</a>
+        <a href="#lane2" class="lane lane2" data-lane="2">2</a>
+        <a href="#lane3" class="lane lane3" data-lane="3">3</a>
+        <a href="#lane4" class="lane lane4" data-lane="4">4</a>
+        <a href="#lane5" class="lane lane5" data-lane="5">5</a>
+        <a href="#lane6" class="lane lane6" data-lane="6">6</a>
+        <a href="#lane7" class="lane lane7" data-lane="7">7</a>
+    </div>
+
+    <!-- Popup container for headshots -->
+    <div class="headshot-popup" id="headshot-popup">
+        <!-- Headshots will be dynamically added here -->
+    </div>
+
+    <!-- Info box for person details (click) -->
+    <div class="info-box" id="info-box"></div>
+
+    <!-- Hover box for lane info (mouseover) -->
+    <div class="hover-box" id="hover-box"></div>
+
+    <script>
+        // Headshot data with info (4 placeholders per lane)
+        const laneHeadshots = {
+            1: [
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Andy Grannell \nFFNN: Captain  \nFF Yards: 35,750" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Renee Reiser \nFFNN: Walk away Renee \nFF Yards: 83,300" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Al Gruber \nFFNN: The Hammer \nFF Yards: 73,200" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Matt \nFFNN: Matt Marquez \nFF Yards: 30,400" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Denise \nFFNN: Da Knees \nFF Yards: 95,404" }
+            ],
+            2: [
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Kurt Pfaff \nFFNN:  \nFF Yards: \nDays: MWF" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Natalie Janiszewski \nFFNN: 69 \nFF Yards: 28,000" },
+                { img: "https://i.imgur.com/um5aF50.jpeg", info: "Name: Hermes Reyes \nFFNN: Heir Maze  \nFF Yards: 134,700 \nDays: MTWTFS" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Mary Lee \nFFNN:  \nFF Yards: " },
+                { img: "https://i.imgur.com/ohfbJVK.jpeg", info: "Name: Tim Methric \nFFNN:  \nFF Yards: " },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Laura Hanby \nFFNN:  \nFF Yards: " },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Bert Winchester\nFFNN: King of the Forest \nFF Yards: 56,625" }
+            ],
+            3: [
+                { img: "https://i.imgur.com/VPIYpuY.png", info: "Name: Frank Ferraro \nFFNN: Fast Frank \nFF Yards: 147,800 \nDays: MTWTFS"},
+                { img: "https://i.imgur.com/e3GT4ge.jpeg", info: "Name: Joan Pfinsgraf \nFFNN: St.Joan \nFF Yards: 152,400 \nDays: MTWTF \nFun Fact: National record holder in the mile" },
+                { img: "https://i.imgur.com/vffTTCA.png", info: "Name: Bill Shipp \nFFNN: Shirtman \nFF Yards: 112,200 \nDays:TT \nFun Fact: Marathon Swimmer" },
+                { img: "https://i.imgur.com/Hl8VASr.jpeg", info: "Name: Gabi Redford \nFFNN: The Great Gabster \nFF Yards: 66,300 \nDays:TTF" }
+            ],
+            4: [
+                { img: "https://i.imgur.com/TrhkMbs.jpeg", info: "Name: Mark Milleker \nFFNN: Mark the Shark \nFF Yards: 19,486 \nDays:MWF" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Diana Elson \nFFNN: Cat and Dog Lady \nFF Yards: 152,400 \nDays:MTWTFS"},
+                { img: "https://i.imgur.com/yUi3oV5.jpeg", info: "Name: Bill Bray \nFFNN: Navy Dude  \nFF Yards:76,000 \nDays:MTWTF"},
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Rob Doug \nFFNN: Robert Douglas \nFF Yards: 100,100 \nDays:MTWTF"},
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Holly \nFFNN: Farm girl \nFF Yards: 63,698"}
+            ],
+            5: [
+                { img: "https://i.imgur.com/gqGVZU1.jpeg", info: "Name: Brian Goodwin \nFFNN: B Good \nFF Yards: 72,400 \nDays:MTTF" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Evan Shebel \nFFNN:  \nFF Yards: 100,000 \nDays:MTWTF"},
+                { img: "https://i.imgur.com/2UARkup.jpeg", info: "Name: Jeff Gilbert \nFFNN: Goodwill Hunter \nFF Yards: 47,750 \nDays: MWF"},
+                { img: "https://i.imgur.com/4eDxAkR.jpeg", info: "Name: Donny James\nFFNN: Chocolate Tsunami \nFF Yards: 86,100 \nDays:MWF"},
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Kirra Brandon \nFFNN: Dr. Early Departure \nFF Yards: 8,700" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Colleen Bastian \nFFNN: Giggles \nFF Yards: 41,050 \nDays:TT" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Bruce Bastian \nFFNN: Cousin Brucie \nFF Yards: 32,800 \nDays:TT" }
+            ],
+            6: [
+                { img: "https://i.imgur.com/SKo1MMB.jpeg", info: "Name: Maureen Rohrs \nFFNN: Mo' Yards \nFF Yards: 280,000 \nDays:MTWTF" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Michele Walters \nFFNN: \nFF Yards: " },
+                { img: "https://i.imgur.com/UsSgGQ7.jpeg", info: "Name: Courtney Friese \nFFNN: Court Bug \nFF Yards: 31,500" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: Brendan \nFFNN: New Guy \nFF Yards: 75,250" },
+                { img: "https://i.imgur.com/XVH5jX6.jpeg", info: "Name: Jenn Bistrack \nFFNN: Jenn & Tonic \nFF Yards: 45,600" }
+            ],
+            7: [
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name: John Doe" },
+                { img: "https://i.imgur.com/eTnmX4C.jpeg", info: "Name:" }
+            ]
+        };
+
+        // Define custom hover text for each lane
+        const laneHoverText = {
+            "1": "Lane 1",
+            "2": "Lane 2",
+            "3": "Fast Lane",
+            "4": "White Pumpkin", 
+            "5": "A bunch of dudes",
+            "6": "Chill Lane",
+            "7": ""
+        };
+
+        const lanes = document.querySelectorAll('.lane');
+        const headshotPopup = document.getElementById('headshot-popup');
+        const infoBox = document.getElementById('info-box');
+        const hoverBox = document.getElementById('hover-box');
+
+        // Show headshots when clicking a lane
+        lanes.forEach(lane => {
+            lane.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                const laneNumber = lane.getAttribute('data-lane');
+                const headshots = laneHeadshots[laneNumber] || [];
+
+                // Clear previous headshots
+                headshotPopup.innerHTML = '';
+
+                // Add clickable headshots to popup
+                headshots.forEach((person, index) => {
+                    const link = document.createElement('a');
+                    link.href = '#'; // Placeholder link
+                    link.dataset.info = person.info; // Store info in data attribute
+                    link.dataset.index = index; // Unique identifier for click handling
+
+                    const img = document.createElement('img');
+                    img.src = person.img;
+                    img.alt = `Headshot for lane ${laneNumber} - Person ${index + 1}`;
+
+                    link.appendChild(img);
+                    headshotPopup.appendChild(link);
+
+                    // Add click event to show info box as a list
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const attributes = person.info.split('\n'); // Split info into array
+                        const ul = document.createElement('ul');
+                        attributes.forEach(attr => {
+                            const li = document.createElement('li');
+                            li.textContent = attr;
+                            ul.appendChild(li);
+                        });
+                        infoBox.innerHTML = ''; // Clear previous content
+                        infoBox.appendChild(ul); // Add list
+                        infoBox.style.display = 'block';
+                    });
+                });
+
+                // Show headshot popup
+                headshotPopup.style.display = 'flex';
+            });
+
+            // Show hover box when hovering over a lane
+            lane.addEventListener('mouseover', () => {
+                const laneNumber = lane.getAttribute('data-lane');
+                hoverBox.textContent = laneHoverText[laneNumber] || `Lane ${laneNumber}`; // Custom text or fallback
+                hoverBox.style.display = 'block';
+            });
+
+            // Hide hover box when not hovering
+            lane.addEventListener('mouseout', () => {
+                hoverBox.style.display = 'none';
+            });
+        });
+
+        // Close both popups when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!headshotPopup.contains(e.target) && !infoBox.contains(e.target) && !e.target.classList.contains('lane')) {
+                headshotPopup.style.display = 'none';
+                infoBox.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
