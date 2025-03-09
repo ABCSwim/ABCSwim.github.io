@@ -12,6 +12,9 @@
             background-color: #f4f4f9;
             position: relative; /* For popup positioning */
             min-height: 100vh; /* Ensure full height */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center the pool container */
         }
         .pool-container {
             position: relative;
@@ -35,7 +38,7 @@
             cursor: pointer;
             text-decoration: none;
         }
-        /* Lane positions */
+        /* Lane positions (landscape/desktop) */
         .lane1 { top: 70%; left: 70%; }
         .lane2 { top: 70%; left: 63%; }
         .lane3 { top: 70%; left: 57%; }
@@ -110,6 +113,29 @@
             font-size: 16px;
             font-weight: bold;
         }
+
+        /* Portrait (mobile) adjustments: width ≤ height */
+        @media (orientation: portrait) {
+            .pool-container {
+                transform: rotate(90deg); /* Rotate the entire container 90 degrees */
+                transform-origin: center; /* Rotate around the center */
+                max-width: 100vh; /* Limit width to viewport height (since rotated) */
+                max-height: 100vw; /* Limit height to viewport width */
+                overflow: hidden; /* Prevent overflow */
+            }
+            /* Adjust lane positions for rotated orientation */
+            .lane1 { top: 30%; left: 70%; }
+            .lane2 { top: 37%; left: 70%; }
+            .lane3 { top: 43%; left: 70%; }
+            .lane4 { top: 48%; left: 70%; }
+            .lane5 { top: 55%; left: 70%; }
+            .lane6 { top: 61%; left: 70%; }
+            .lane7 { top: 68%; left: 70%; }
+            /* No counter-rotation for lanes, they rotate with the image */
+            body {
+                overflow-x: auto; /* Allow horizontal scrolling if needed */
+            }
+        }
     </style>
 </head>
 <body>
@@ -169,7 +195,6 @@
                 { img: "https://raw.githubusercontent.com/ABCSwim/ABCSwim.github.io/refs/heads/main/Docs/yel.jpg", info: "Name: Rob Doug \nBay Swims: 3 \nFFNN: Robert Douglas \nFF Yards: 100,100 \nDays:MTWTF"},
                 { img: "https://raw.githubusercontent.com/ABCSwim/ABCSwim.github.io/refs/heads/main/Docs/yel.jpg", info: "Name: Holly \nBay Swims: 6 \nFFNN: Farm girl \nFF Yards: 63,698"},
                 { img: "https://raw.githubusercontent.com/ABCSwim/ABCSwim.github.io/refs/heads/main/Docs/Christina.jpg", info: "Name: Christina Dorrer \nBay Swims:  \nFFNN:  \nFF Yards: "}
-                
             ],
             5: [
                 { img: "https://raw.githubusercontent.com/ABCSwim/ABCSwim.github.io/refs/heads/main/Docs/brian.jpg", info: "Name: Brian Goodwin \nBay Swims: \nFFNN: B Good \nFF Yards: 72,400 \nDays:MTTF" },
@@ -198,7 +223,7 @@
             "1": "Lane 1",
             "2": "Lane 2",
             "3": "Fast Lane",
-            "4": "White Pumpkin", 
+            "4": "White Pumpkin",
             "5": "A bunch of dudes",
             "6": "Lane 6",
             "7": ""
