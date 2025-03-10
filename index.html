@@ -10,16 +10,19 @@
             background-color: #FFFF00; /* Page background yellow */
             margin: 0; /* Remove default margin */
             display: flex; /* Use flexbox for layout */
-            justify-content: space-between; /* Space out columns */
-            align-items: flex-start; /* Align items at the top */
             min-height: 100vh; /* Full height of viewport */
             padding: 10px; /* Add some padding for edges */
+        }
+        .left-column {
+            display: flex;
+            flex-direction: column; /* Stack container and Strava vertically */
+            flex: 1; /* Take half the width */
+            align-items: center; /* Center content horizontally */
         }
         .container {
             max-width: 600px;
             padding: 20px;
             text-align: center;
-            flex: 1; /* Take available space on left */
         }
         .button-row {
             display: flex;
@@ -69,7 +72,7 @@
         .strava-container {
             width: 300px; /* Fixed width for Strava widget */
             padding: 5px;
-            flex-shrink: 0; /* Prevent shrinking */
+            margin-top: 20px; /* Space between container and Strava */
         }
         .strava-container iframe {
             width: 100%;
@@ -79,7 +82,10 @@
         .doc-container {
             width: 600px; /* Fixed width for document viewer */
             padding: 10px;
-            flex-shrink: 0; /* Prevent shrinking */
+            flex: 1; /* Take half the width */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
         }
         .doc-container iframe {
             width: 100%;
@@ -95,17 +101,22 @@
                 align-items: center; /* Center everything horizontally */
                 padding: 0; /* Remove padding for full-width */
             }
-            .container, .strava-container, .doc-container {
+            .left-column, .container, .strava-container, .doc-container {
                 width: 100%; /* Full width on mobile */
                 max-width: 100%; /* Override max-width for container */
                 padding: 10px; /* Consistent padding */
                 box-sizing: border-box; /* Include padding in width */
             }
+            .left-column {
+                flex-direction: column; /* Ensure vertical stacking */
+            }
             .doc-container {
                 order: 2; /* Move document container to the bottom */
+                display: block; /* Reset from flex to block */
             }
             .strava-container {
                 order: 1; /* Keep Strava below main content but above doc */
+                margin-top: 0; /* Remove margin-top in mobile */
             }
             .container {
                 order: 0; /* Main content at the top */
@@ -129,39 +140,41 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <span class="header-text">Arundel Breakfast Club</span>
-        <img src="https://i.imgur.com/l6Lcm8j.jpeg" alt="Annapolis Breakfast Club Image" class="header-image">
-        <div class="button-row">
-            <div class="input-group">
-                <a href="https://drive.google.com/drive/folders/1NhVRopBDfFZAA40Pse6Ra5lzimc7QbHn">
-                    <input type="text" value="Previous Workouts" readonly>
-                </a>
-            </div>
-            <div class="input-group">
-                <a href="https://abcswim.github.io/roster.html">
-                    <input type="text" value="Roster" readonly>
-                </a>
-            </div>
-            <div class="input-group">
-                <a href="https://abcswim.github.io/about">
-                    <input type="text" value="About" readonly>
-                </a>
-            </div>
-            <div class="input-group">
-                <a href="https://abcswim.github.io/calendar.html">
-                    <input type="text" value="Calendar" readonly>
-                </a>
-            </div>
-            <div class="input-group">
-                <a href="https://abcswim.github.io/bayswiminfo.html">
-                    <input type="text" value="Bay Swim Info" readonly>
-                </a>
+    <div class="left-column">
+        <div class="container">
+            <span class="header-text">Arundel Breakfast Club</span>
+            <img src="https://i.imgur.com/l6Lcm8j.jpeg" alt="Annapolis Breakfast Club Image" class="header-image">
+            <div class="button-row">
+                <div class="input-group">
+                    <a href="https://drive.google.com/drive/folders/1NhVRopBDfFZAA40Pse6Ra5lzimc7QbHn">
+                        <input type="text" value="Previous Workouts" readonly>
+                    </a>
+                </div>
+                <div class="input-group">
+                    <a href="https://abcswim.github.io/roster.html">
+                        <input type="text" value="Roster" readonly>
+                    </a>
+                </div>
+                <div class="input-group">
+                    <a href="https://abcswim.github.io/about">
+                        <input type="text" value="About" readonly>
+                    </a>
+                </div>
+                <div class="input-group">
+                    <a href="https://abcswim.github.io/calendar.html">
+                        <input type="text" value="Calendar" readonly>
+                    </a>
+                </div>
+                <div class="input-group">
+                    <a href="https://abcswim.github.io/bayswiminfo.html">
+                        <input type="text" value="Bay Swim Info" readonly>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="strava-container">
-        <iframe allowtransparency="true" frameborder="0" height="454" scrolling="no" src="https://www.strava.com/clubs/1426652/latest-rides/ab9ad42b8a2516bd83569e11d9f11c75c0b09769?show_rides=true" width="300"></iframe>
+        <div class="strava-container">
+            <iframe allowtransparency="true" frameborder="0" height="454" scrolling="no" src="https://www.strava.com/clubs/1426652/latest-rides/ab9ad42b8a2516bd83569e11d9f11c75c0b09769?show_rides=true" width="300"></iframe>
+        </div>
     </div>
     <div class="doc-container">
         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQgnP0YR2ddLjK6bF8RvWPWNezmEGBWdQ0H6Wq1MA-j9Hf5a29vz8kpVHl7EKpwXQ/pub?embedded=true"></iframe>
