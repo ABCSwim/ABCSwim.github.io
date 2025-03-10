@@ -15,6 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center; /* Center the pool container */
+            overflow: hidden; /* Prevent scrollbars */
         }
         .pool-container {
             position: relative;
@@ -30,13 +31,14 @@
             font-size: 20px;
             font-weight: bold;
             text-align: center;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.7); /* Black background for landscape */
             border-radius: 50%;
             width: 30px;
             height: 30px;
             line-height: 30px;
             cursor: pointer;
             text-decoration: none;
+            z-index: 10; /* Ensure above pool image */
         }
         /* Lane positions (landscape/desktop) */
         .lane1 { top: 70%; left: 70%; }
@@ -116,40 +118,67 @@
 
         /* Portrait (mobile) adjustments: width ≤ height */
         @media (orientation: portrait) {
-            .pool-container {
-                transform: rotate(90deg); /* Rotate the entire container 90 degrees */
-                transform-origin: center; /* Rotate around the center */
-                max-width: 100vh; /* Limit width to viewport height (since rotated) */
-                max-height: 100vw; /* Limit height to viewport width */
-                overflow: hidden; /* Prevent overflow */
-            }
-            /* Adjust lane positions for rotated orientation */
-            .lane1 { top: 30%; left: 70%; }
-            .lane2 { top: 37%; left: 70%; }
-            .lane3 { top: 43%; left: 70%; }
-            .lane4 { top: 48%; left: 70%; }
-            .lane5 { top: 55%; left: 70%; }
-            .lane6 { top: 61%; left: 70%; }
-            .lane7 { top: 68%; left: 70%; }
-            /* No counter-rotation for lanes, they rotate with the image */
             body {
-                overflow-x: auto; /* Allow horizontal scrolling if needed */
+                padding: 0; /* Remove padding */
             }
+            .pool-container {
+                position: absolute; /* Full-screen background */
+                top: 50%;
+                left: 50%;
+                width: 100vh; /* Match viewport height (rotated) */
+                height: 100vw; /* Match viewport width (rotated) */
+                transform: translate(-50%, -50%) rotate(90deg); /* Center and rotate 90° clockwise */
+                z-index: 0; /* Behind lanes */
+            }
+            .pool-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* Fill the screen, cropping if needed */
+            }
+            .lane {
+                position: absolute; /* Absolute positioning for precise placement */
+                width: 100%; /* Full width */
+                height: calc(80vh / 7); /* Compress to top 80% of screen */
+                line-height: calc(80vh / 7); /* Center text vertically */
+                border-radius: 0; /* Rectangular shape */
+                background: rgba(0, 102, 204, 0.7); /* Semi-transparent blue fill */
+                border: 2px solid white; /* White outline */
+                font-size: 24px; /* Larger text */
+                z-index: 10; /* Above pool image */
+                color: transparent; /* Hide original text in portrait */
+            }
+            /* Position lanes: Lane 7 at top, Lane 1 near bottom (within top 80%) */
+            .lane7 { top: 0; left: 0; }
+            .lane6 { top: calc(80vh / 7); left: 0; }
+            .lane5 { top: calc(2 * 80vh / 7); left: 0; }
+            .lane4 { top: calc(3 * 80vh / 7); left: 0; }
+            .lane3 { top: calc(4 * 80vh / 7); left: 0; }
+            .lane2 { top: calc(5 * 80vh / 7); left: 0; }
+            .lane1 { top: calc(6 * 80vh / 7); left: 0; }
+
+            /* Replace text with 'Lane X' in portrait mode */
+            .lane1:after { content: "Lane 1"; color: white; }
+            .lane2:after { content: "Lane 2"; color: white; }
+            .lane3:after { content: "Lane 3"; color: white; }
+            .lane4:after { content: "Lane 4"; color: white; }
+            .lane5:after { content: "Lane 5"; color: white; }
+            .lane6:after { content: "Lane 6"; color: white; }
+            .lane7:after { content: "Lane 7"; color: white; }
         }
     </style>
 </head>
 <body>
     <div class="pool-container">
         <img src="https://uploads-ssl.webflow.com/5de35b5783c9d790ffea68ae/5f2aa64523407102a0203acb_FitRepublik.jpg" alt="Swimming Pool">
-        <!-- Clickable numbers -->
-        <a href="#lane1" class="lane lane1" data-lane="1">1</a>
-        <a href="#lane2" class="lane lane2" data-lane="2">2</a>
-        <a href="#lane3" class="lane lane3" data-lane="3">3</a>
-        <a href="#lane4" class="lane lane4" data-lane="4">4</a>
-        <a href="#lane5" class="lane lane5" data-lane="5">5</a>
-        <a href="#lane6" class="lane lane6" data-lane="6">6</a>
-        <a href="#lane7" class="lane lane7" data-lane="7">7</a>
     </div>
+    <!-- Clickable numbers with numbers only for landscape -->
+    <a href="#lane1" class="lane lane1" data-lane="1">1</a>
+    <a href="#lane2" class="lane lane2" data-lane="2">2</a>
+    <a href="#lane3" class="lane lane3" data-lane="3">3</a>
+    <a href="#lane4" class="lane lane4" data-lane="4">4</a>
+    <a href="#lane5" class="lane lane5" data-lane="5">5</a>
+    <a href="#lane6" class="lane lane6" data-lane="6">6</a>
+    <a href="#lane7" class="lane lane7" data-lane="7">7</a>
 
     <!-- Popup container for headshots -->
     <div class="headshot-popup" id="headshot-popup">
