@@ -137,6 +137,23 @@
                 max-width: 90%; /* Slightly larger image to fit mobile */
             }
         }
+        .widget {
+            width: 200px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .temperature {
+            font-size: 2em;
+            color: #333;
+        }
+        .location {
+            font-size: 1em;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -181,6 +198,15 @@
         <div class="strava-container">
             <iframe allowtransparency="true" frameborder="0" height="454" scrolling="no" src="https://www.strava.com/clubs/1426652/latest-rides/ab9ad42b8a2516bd83569e11d9f11c75c0b09769?show_rides=true" width="300"></iframe>
         </div>
+<!--  -->
+ <div class="widget">
+        <div class="location" id="location">Pool Temp</div>
+        <div class="temperature" id="temperature">85°F</div>
+
+    </div>
+
+<!--          -->
+        
     </div>
     <div class="doc-container">
         <iframe src="https://docs.google.com/document/d/e/2PACX-1vQgnP0YR2ddLjK6bF8RvWPWNezmEGBWdQ0H6Wq1MA-j9Hf5a29vz8kpVHl7EKpwXQ/pub?embedded=true"></iframe>
